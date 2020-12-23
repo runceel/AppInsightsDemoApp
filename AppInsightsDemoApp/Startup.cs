@@ -43,7 +43,6 @@ namespace AppInsightsDemoApp
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -51,6 +50,7 @@ namespace AppInsightsDemoApp
                 endpoints.MapControllers();
             });
 
+            app.UseSpaStaticFiles();
             app.UseSpa(builder =>
             {
                 builder.Options.SourcePath = ClientAppPath;
