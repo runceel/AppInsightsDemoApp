@@ -1,18 +1,34 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
-  </div>
+    <div class="home">
+        <Button type="submit" label="Submit" />
+        <InputText type="text" v-model="state.label" />
+        <span>{{ state.label }}</span>
+    </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+    import { defineComponent, reactive } from 'vue';
+    import Button from 'primevue/button'
+    import InputText from 'primevue/inputtext'
 
-export default defineComponent({
-  name: 'Home',
-  components: {
-    HelloWorld,
-  },
-});
+    type State = {
+        label: string
+    }
+
+    export default defineComponent({
+        name: 'Home',
+        components: {
+            Button,
+            InputText,
+        },
+        setup() {
+            const state = reactive<State>({
+                label: ""
+            })
+
+            return {
+                state,
+            }
+        },
+    });
 </script>
