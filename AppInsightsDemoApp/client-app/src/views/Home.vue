@@ -7,7 +7,6 @@
 </template>
 
 <script lang="ts">
-import 'uikit/dist/css/uikit.css'
 import { defineComponent, reactive } from "vue"
 
 type State = {
@@ -21,10 +20,9 @@ export default defineComponent({
   setup() {
     const state = reactive<State>({
       label: "",
-    });
+    })
 
     const updateLabel = () => state.label = new Date().toString()
-
 
     return {
       state,
