@@ -1,34 +1,35 @@
 <template>
-    <div class="home">
-        <Button type="submit" label="Submit" />
-        <InputText type="text" v-model="state.label" />
-        <span>{{ state.label }}</span>
-    </div>
+  <div class="home">
+      <button class="uk-button uk-button-default" @click="updateLabel">ok</button>
+      <input type="text" class="uk-input" v-model="state.label" />
+    <span>{{ state.label }}</span>
+  </div>
 </template>
 
 <script lang="ts">
-    import { defineComponent, reactive } from 'vue';
-    import Button from 'primevue/button'
-    import InputText from 'primevue/inputtext'
+import 'uikit/dist/css/uikit.css'
+import { defineComponent, reactive } from "vue"
 
-    type State = {
-        label: string
-    }
+type State = {
+  label: string;
+};
 
-    export default defineComponent({
-        name: 'Home',
-        components: {
-            Button,
-            InputText,
-        },
-        setup() {
-            const state = reactive<State>({
-                label: ""
-            })
-
-            return {
-                state,
-            }
-        },
+export default defineComponent({
+  name: "Home",
+  components: {
+  },
+  setup() {
+    const state = reactive<State>({
+      label: "",
     });
+
+    const updateLabel = () => state.label = new Date().toString()
+
+
+    return {
+      state,
+      updateLabel,
+    }
+  },
+});
 </script>
