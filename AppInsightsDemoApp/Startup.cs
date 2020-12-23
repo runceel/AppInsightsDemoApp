@@ -16,6 +16,8 @@ namespace AppInsightsDemoApp
 {
     public class Startup
     {
+        private const string DevServerUrl = "http://localhost:8080";
+        private const string ClientAppPath = "client-app";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,6 +29,7 @@ namespace AppInsightsDemoApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSpaStaticFiles(options => options.RootPath = $"{ClientAppPath}/dist");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,10 +53,10 @@ namespace AppInsightsDemoApp
 
             app.UseSpa(builder =>
             {
-                builder.Options.SourcePath = "client-app";
+                builder.Options.SourcePath = ClientAppPath;
                 if (env.IsDevelopment())
                 {
-                    builder.UseProxyToSpaDevelopmentServer("http://localhost:8080");
+                    builder.UseProxyToSpaDevelopmentServer(DevServerUrl);
                 }
             });
         }
