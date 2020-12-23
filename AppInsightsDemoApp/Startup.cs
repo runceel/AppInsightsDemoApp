@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -50,7 +51,10 @@ namespace AppInsightsDemoApp
             app.UseSpa(builder =>
             {
                 builder.Options.SourcePath = "client-app";
-                builder.UseProxyToSpaDevelopmentServer("http://localhost:8080");
+                if (env.IsDevelopment())
+                {
+                    builder.UseProxyToSpaDevelopmentServer("http://localhost:8080");
+                }
             });
         }
     }
