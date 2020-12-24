@@ -2,7 +2,7 @@
   <div>
     <h2 class="">Data</h2>
     <div class="p-d-flex">
-      <Button @click="updateLabel">Load</Button>
+      <Button @click="loadData">Load</Button>
     </div>
       <DataTable :value="state.products" :paginator="true" class="p-datatable-sm"
         :rows="10"
@@ -16,13 +16,14 @@
 </template>
 
 <script lang="ts">
-import { ApplicationInsights } from "@microsoft/applicationinsights-web";
+import { ApplicationInsights, SeverityLevel } from "@microsoft/applicationinsights-web";
 import { defineComponent, inject, reactive } from "vue";
 import Button from "primevue/button";
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
+import { useToast } from 'primevue/usetoast'
 import axios from 'axios'
-import { Product, Color } from '../models/product'
+import { Product } from '../models/product'
 
 type State = {
   products: Product[];
@@ -36,6 +37,7 @@ export default defineComponent({
     Column,
   },
   setup() {
+    const toast = useToast()
     const appInsights = inject<ApplicationInsights>(
       "appInsights"
     ) as ApplicationInsights;
@@ -43,7 +45,7 @@ export default defineComponent({
       products: [],
     });
 
-    const updateLabel = async () => {
+    const loadData = async () => {
       const newValue = new Date().toString();
       appInsights.trackEvent({
         name: "clicked",
@@ -55,13 +57,15 @@ export default defineComponent({
       })
       if (productResult.status == 200) {
         state.products = productResult.data
-        console.log(JSON.stringify(state.products[0]))
+        appInsights.trackTrace({ message: `${state.products.length} 件のデータを取得しました。`, severityLevel: SeverityLevel.Information })
+      } else {
+        appInsights.trackTrace({ message: `データの取得が出来ませんでした。`, severityLevel: SeverityLevel.Error })
       }
     };
 
     return {
       state,
-      updateLabel,
+      loadData,
     };
   },
 });
