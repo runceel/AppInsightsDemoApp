@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AppInsightsDemoApp.Models;
 
 namespace AppInsightsDemoApp
 {
@@ -28,9 +30,11 @@ namespace AppInsightsDemoApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplicationInsightsTelemetry(); // ’Ç‰Á
+            services.AddApplicationInsightsTelemetry(); // add
             services.AddSpaStaticFiles(options => options.RootPath = $"{ClientAppPath}/dist");
             services.AddControllers();
+            services.AddDbContext<AppInsightsDemoDbContext>(options => 
+                options.UseSqlServer(Configuration.GetConnectionString(nameof(AppInsightsDemoDbContext))));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

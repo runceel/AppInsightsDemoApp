@@ -1,23 +1,17 @@
 <template>
   <div>
-    <h2 class="">Form</h2>
-    <div class="p-fluid">
-      <div class="p-field">
-        <label for="button">Set current date time to the below textbox</label>
-        <Button id="button" class="p-d-block" label="Click" @click="updateLabel"
-          >OK</Button
-        >
-      </div>
-
-      <div class="p-field">
-        <label for="textBox">Sample textbox</label>
-        <InputText id="textBox" v-model="state.label" type="text" />
-      </div>
-
-      <div>
-        <span id="message">{{ state.label }}</span>
-      </div>
+    <h2 class="">Data</h2>
+    <div class="p-d-flex">
+      <Button @click="updateLabel">Load</Button>
     </div>
+      <DataTable :value="state.products" :paginator="true" class="p-datatable-sm"
+        :rows="10"
+        paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+        :rowsPerPageOptions="[10,20,50]"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords}">
+        <Column field="productNumber" header="Product number"></Column>
+        <Column field="name" header="Name"></Column>
+      </DataTable>
   </div>
 </template>
 
@@ -25,34 +19,44 @@
 import { ApplicationInsights } from "@microsoft/applicationinsights-web";
 import { defineComponent, inject, reactive } from "vue";
 import Button from "primevue/button";
-import InputText from "primevue/inputtext";
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import axios from 'axios'
+import { Product, Color } from '../models/product'
 
 type State = {
-  label: string;
+  products: Product[];
 };
 
 export default defineComponent({
   name: "Home",
   components: {
     Button,
-    InputText,
+    DataTable,
+    Column,
   },
   setup() {
     const appInsights = inject<ApplicationInsights>(
       "appInsights"
     ) as ApplicationInsights;
     const state = reactive<State>({
-      label: "",
+      products: [],
     });
 
-    const updateLabel = () => {
+    const updateLabel = async () => {
       const newValue = new Date().toString();
       appInsights.trackEvent({
         name: "clicked",
         properties: { message: newValue },
       });
       appInsights.trackTrace({ message: "クリックされた" });
-      state.label = newValue;
+      const productResult = await axios.get<Product[]>('product', {
+        method: 'get'
+      })
+      if (productResult.status == 200) {
+        state.products = productResult.data
+        console.log(JSON.stringify(state.products[0]))
+      }
     };
 
     return {
