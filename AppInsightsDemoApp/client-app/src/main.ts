@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
+import Toast from 'primevue/toast'
 import 'primeflex/primeflex.css'
 import 'primevue/resources/themes/saga-blue/theme.css'
 import 'primevue/resources/primevue.min.css'
@@ -12,4 +13,5 @@ createApp(App)
     .use(router)
     .use(PrimeVue)
     .use(ToastService)
+    .component('Toast', Toast)
     .mount('#app')

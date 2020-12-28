@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AppInsightsDemoApp.Models;
+using AppInsightsDemoApp.Repositories;
 
 namespace AppInsightsDemoApp
 {
@@ -35,6 +36,8 @@ namespace AppInsightsDemoApp
             services.AddControllers();
             services.AddDbContext<AppInsightsDemoDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString(nameof(AppInsightsDemoDbContext))));
+
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using AppInsightsDemoApp.Repositories;
 
 namespace AppInsightsDemoApp.Controllers
 {
@@ -12,15 +13,23 @@ namespace AppInsightsDemoApp.Controllers
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly AppInsightsDemoDbContext _context;
+        private readonly IProductRepository _productRepository;
 
-        public ProductController(AppInsightsDemoDbContext context)
+        public ProductController(IProductRepository productRepository)
         {
-            _context = context;
+            _productRepository = productRepository;
         }
 
         [HttpGet]
         public async Task<IEnumerable<Product>> Get() => 
-            await _context.Products.ToListAsync();
+            await _productRepository.GetProductsAsync();
+
+        [HttpGet]
+        [Route("{productId:int}")]
+        public async Task<Product> GetById(int productId)
+        {
+            await Task.Delay(3000);
+            return await _productRepository.GetProductByIdAsync(productId);
+        }
     }
 }
