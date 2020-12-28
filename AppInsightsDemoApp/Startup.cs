@@ -32,6 +32,7 @@ namespace AppInsightsDemoApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry(); // add
+            services.AddSnapshotCollector();
             services.AddSpaStaticFiles(options => options.RootPath = $"{ClientAppPath}/dist");
             services.AddControllers();
             services.AddDbContext<AppInsightsDemoDbContext>(options => 
