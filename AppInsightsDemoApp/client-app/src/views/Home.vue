@@ -103,7 +103,7 @@ export default defineComponent({
       await loadData();
     });
     const onRowSelect = async (e: Event) => {
-      const data = (<any>e).data as Product;
+      const data = (e as any).data as Product;
       await router.push({
         name: 'productDetail',
         params: { productId: data.productId },
