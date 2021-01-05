@@ -53,6 +53,7 @@ export default defineComponent({
     const appInsights = inject<ApplicationInsights>(
       "appInsights"
     ) as ApplicationInsights;
+    onMounted(() => appInsights.trackPageView({ name: 'Home page' }));
     const state = reactive<State>({
       products: [],
     });
@@ -99,13 +100,13 @@ export default defineComponent({
     };
 
     const router = useRouter();
-    onMounted(async() => {
+    onMounted(async () => {
       await loadData();
     });
     const onRowSelect = async (e: Event) => {
       const data = (e as any).data as Product;
       await router.push({
-        name: 'productDetail',
+        name: "productDetail",
         params: { productId: data.productId },
       });
     };

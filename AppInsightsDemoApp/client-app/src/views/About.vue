@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { ApplicationInsights } from "@microsoft/applicationinsights-web";
-import { defineComponent, inject, reactive } from "vue";
+import { defineComponent, inject, onMounted, reactive } from "vue";
 import { useToast } from "primevue/usetoast";
 import axios from "axios";
 
@@ -22,6 +22,7 @@ export default defineComponent({
     const appInsights = inject<ApplicationInsights>(
       "appInsights"
     ) as ApplicationInsights;
+    onMounted(() => appInsights.trackPageView({ name: 'About page' }));
     const toast = useToast();
     const state = reactive<State>({
       input: "",
