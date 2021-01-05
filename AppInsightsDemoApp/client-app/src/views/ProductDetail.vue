@@ -45,6 +45,7 @@ export default defineComponent({
 
     console.log(`ProductDetail.vue#setup: ${productId}`);
     console.log(`state: ${state.product}`);
+    onMounted(() => appInsights.trackPageView({ name: "Product detail page" }));
     onMounted(async () => {
       console.log("ProductDetail.vue#onMounted");
       try {
