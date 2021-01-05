@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
@@ -22,16 +23,19 @@ namespace AppInsightsDemoApp.Logging
         {
             private readonly ILogger _logger;
             private readonly string _methodName;
+            private readonly Stopwatch _stopwatch;
 
             public LogScope(ILogger logger, string methodName)
             {
                 _logger = logger;
                 _methodName = methodName;
+                _stopwatch = Stopwatch.StartNew();
             }
 
             public void Dispose()
             {
-                _logger.LogInformation("{0} end.", _methodName);
+                _stopwatch.Stop();
+                _logger.LogInformation("{methodName} end. ({elapsed}ms)", _methodName, _stopwatch.ElapsedMilliseconds);
             }
         }
     }
