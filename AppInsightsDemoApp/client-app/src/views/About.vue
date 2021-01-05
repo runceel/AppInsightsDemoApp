@@ -14,8 +14,9 @@ import { useToast } from "primevue/usetoast";
 import axios from "axios";
 
 type State = {
-  input: string
+  input: string;
 };
+
 export default defineComponent({
   setup() {
     const appInsights = inject<ApplicationInsights>(
