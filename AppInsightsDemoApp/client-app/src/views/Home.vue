@@ -24,10 +24,6 @@
 </template>
 
 <script lang="ts">
-import {
-  ApplicationInsights,
-  SeverityLevel,
-} from "@microsoft/applicationinsights-web";
 import { defineComponent, inject, onMounted, reactive } from "vue";
 import Button from "primevue/button";
 import DataTable from "primevue/datatable";
@@ -50,10 +46,6 @@ export default defineComponent({
   },
   setup() {
     const toast = useToast();
-    const appInsights = inject<ApplicationInsights>(
-      "appInsights"
-    ) as ApplicationInsights;
-    onMounted(() => appInsights.trackPageView({ name: 'Home page' }));
     const state = reactive<State>({
       products: [],
     });
@@ -61,37 +53,19 @@ export default defineComponent({
     const loadData = async () => {
       try {
         const newValue = new Date().toString();
-        appInsights.trackEvent({
-          name: "clicked",
-          properties: { message: newValue },
-        });
-        appInsights.trackTrace({ message: "クリックされた" });
         const productResult = await axios.get<Product[]>("product", {
           method: "get",
         });
         if (productResult.status == 200) {
           state.products = productResult.data;
-          appInsights.trackTrace({
-            message: `${state.products.length} 件のデータを取得しました。`,
-            severityLevel: SeverityLevel.Information,
-          });
-
           toast.add({
             severity: "success",
             summary: "Data loaded.",
             detail: `${state.products.length} 件のデータを読み込みました。`,
             life: 3000,
           });
-        } else {
-          appInsights.trackTrace({
-            message: `データの取得が出来ませんでした。`,
-            severityLevel: SeverityLevel.Error,
-          });
-        }
+        } 
       } catch (e) {
-        appInsights.trackException({
-          error: e,
-        });
         toast.add({
           severity: "error",
           summary: "データの取得に失敗しました。",

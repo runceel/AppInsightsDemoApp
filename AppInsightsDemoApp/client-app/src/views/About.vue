@@ -8,7 +8,6 @@
 </template>
 
 <script lang="ts">
-import { ApplicationInsights } from "@microsoft/applicationinsights-web";
 import { defineComponent, inject, onMounted, reactive } from "vue";
 import { useToast } from "primevue/usetoast";
 import axios from "axios";
@@ -19,10 +18,6 @@ type State = {
 
 export default defineComponent({
   setup() {
-    const appInsights = inject<ApplicationInsights>(
-      "appInsights"
-    ) as ApplicationInsights;
-    onMounted(() => appInsights.trackPageView({ name: 'About page' }));
     const toast = useToast();
     const state = reactive<State>({
       input: "",
@@ -34,7 +29,6 @@ export default defineComponent({
         toast.add({ severity: "info", summary: "送信できました。" });
         state.input = "";
       } catch (e) {
-        appInsights.trackException({ error: e });
         toast.add({ severity: "error", summary: "エラーが発生しました。" });
       }
     };

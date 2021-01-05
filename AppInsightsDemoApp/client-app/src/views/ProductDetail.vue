@@ -23,7 +23,6 @@
 
 <script lang="ts">
 import { Product } from "@/models/product";
-import { ApplicationInsights } from "@microsoft/applicationinsights-web";
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
 import { defineComponent, inject, onMounted, reactive } from "vue";
@@ -35,9 +34,6 @@ type State = {
 
 export default defineComponent({
   setup() {
-    const appInsights = inject<ApplicationInsights>(
-      "appInsights"
-    ) as ApplicationInsights;
     const route = useRoute();
     const productId = route.params.productId as string;
     const state = reactive<State>({ product: undefined });
@@ -45,7 +41,6 @@ export default defineComponent({
 
     console.log(`ProductDetail.vue#setup: ${productId}`);
     console.log(`state: ${state.product}`);
-    onMounted(() => appInsights.trackPageView({ name: "Product detail page" }));
     onMounted(async () => {
       console.log("ProductDetail.vue#onMounted");
       try {
@@ -55,7 +50,6 @@ export default defineComponent({
         state.product = result.data;
         console.log("data loaded.");
       } catch (e) {
-        appInsights.trackException({ error: e });
         toast.add({
           severity: "error",
           summary: "データの取得に失敗しました。",
