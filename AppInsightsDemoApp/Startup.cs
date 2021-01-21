@@ -14,6 +14,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppInsightsDemoApp.Models;
 using AppInsightsDemoApp.Repositories;
+using AppInsightsDemoApp.RedisClients;
+using Microsoft.ApplicationInsights;
 
 namespace AppInsightsDemoApp
 {
@@ -39,6 +41,9 @@ namespace AppInsightsDemoApp
                 options.UseSqlServer(Configuration.GetConnectionString(nameof(AppInsightsDemoDbContext))));
 
             services.AddScoped<IProductRepository, ProductRepository>();
+
+            services.AddSingleton<IRedisClient, RedisClient>(p => 
+                new RedisClient(Configuration["REDIS_CONNECTION_STRING"], p.GetService<TelemetryClient>()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

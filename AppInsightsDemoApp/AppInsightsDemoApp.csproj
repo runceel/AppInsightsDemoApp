@@ -23,6 +23,7 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		  <PrivateAssets>all</PrivateAssets>
 		</PackageReference>
+		<PackageReference Include="StackExchange.Redis" Version="2.2.4" />
 	</ItemGroup>
 	<ItemGroup>
 		<!-- Don't publish the SPA source files, but do show them in the project files list -->
