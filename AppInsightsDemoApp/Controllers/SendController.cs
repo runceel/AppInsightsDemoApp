@@ -32,6 +32,11 @@ namespace AppInsightsDemoApp.Controllers
                 await _redisClient.StringSetAsync("cache", body.Input[6..^0]);
             }
 
+            if (body.Input == "slow")
+            {
+                await Task.Delay(6000);
+            }
+
             return new OkResult();
         }
 

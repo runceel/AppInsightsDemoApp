@@ -43,7 +43,6 @@ export default defineComponent({
       try {
         await axios.post<string>("send", { input: state.input });
         toast.add({ severity: "info", summary: "送信できました。" });
-        state.input = "";
       } catch (e) {
         appInsights.trackException({ error: e });
         toast.add({ severity: "error", summary: "エラーが発生しました。" });
